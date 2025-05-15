@@ -10,4 +10,8 @@
     <PackageReference Include="ECommerceSite.Contracts" Version="1.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\domain\domain.csproj" />
+  </ItemGroup>
+
 </Project>
