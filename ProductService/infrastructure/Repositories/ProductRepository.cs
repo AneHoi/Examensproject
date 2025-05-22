@@ -49,4 +49,22 @@ public class ProductRepository: IProductRepository
     {
         return Task.FromResult(_products.AsEnumerable());
     }
+
+    public Task<Product> CreateProduct(Product product)
+    {
+        _products.Add(product);
+        return Task.FromResult(product);
+    }
+
+    public Task<Product?> UpdateProduct(Product product)
+    {
+        var existingProduct = _products.FirstOrDefault(p => p.Id.Equals(product.Id));
+        if (existingProduct == null) return Task.FromResult<Product?>(null);
+        
+        existingProduct.Name = product.Name;
+        existingProduct.Description = product.Description;
+        existingProduct.Price = product.Price;
+        existingProduct.Quantity = product.Quantity;
+        return Task.FromResult<Product?>(existingProduct);
+    }
 }

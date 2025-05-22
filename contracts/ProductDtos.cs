@@ -8,6 +8,13 @@ public record ProductDto
     public decimal Price { get; init; }
 }
 
+public record ProductCreateDto
+{
+    public string Name { get; init; }
+    public string Description { get; init; }
+    public decimal Price { get; init; }
+}
+
 public record ProductStockCheckRequestDto
 {
     public Guid ProductId { get; init; }

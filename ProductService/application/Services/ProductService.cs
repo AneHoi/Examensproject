@@ -1,4 +1,5 @@
 ﻿using Contracts;
+using domain;
 using domain.RepositoryInterfaces;
 
 namespace application;
@@ -42,5 +43,48 @@ public class ProductService: IProductService
             Description = p.Description,
             Price = p.Price,
         }));
+    }
+
+    public async Task<ProductDto> CreateProduct(ProductDto productDto)
+    {
+        var product = new Product
+        {
+            Id = Guid.NewGuid(),
+            Name = productDto.Name,
+            Description = productDto.Description,
+            Price = productDto.Price,
+        };
+        
+        var createdProduct = await _productRepository.CreateProduct(product);
+        
+        return new ProductDto
+        {
+            Id = createdProduct.Id,
+            Name = createdProduct.Name,
+            Description = createdProduct.Description,
+            Price = createdProduct.Price,
+        };
+    }
+
+    public async Task<ProductDto> UpsertProduct(Guid id, ProductDto productDto)
+    {
+        var product = new Product
+        {
+            Id = id,
+            Name = productDto.Name,
+            Description = productDto.Description,
+            Price = productDto.Price,
+        };
+        
+        var updatedProduct = await _productRepository.UpdateProduct(product) 
+                             ?? await _productRepository.CreateProduct(product);
+
+        return new ProductDto
+        {
+            Id = updatedProduct.Id,
+            Name = updatedProduct.Name,
+            Description = updatedProduct.Description,
+            Price = updatedProduct.Price,
+        };
     }
 }
