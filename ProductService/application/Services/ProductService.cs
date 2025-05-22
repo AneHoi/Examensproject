@@ -1,23 +1,29 @@
 ﻿using Contracts;
 using domain;
 using domain.RepositoryInterfaces;
+using Microsoft.Extensions.Logging;
 
 namespace application;
 
 public class ProductService: IProductService
 {
     private readonly IProductRepository _productRepository;
+    private readonly ILogger<ProductService> _logger;
     
-    public ProductService(IProductRepository productRepository)
+    public ProductService(IProductRepository productRepository, ILogger<ProductService> logger)
     {
         _productRepository = productRepository;
+        _logger = logger;
     }
     
     public async Task<ProductDto?> GetProductById(Guid Id)
     {
+        _logger.LogInformation("Getting product with ID: {ProductId}", Id);
+        
         var product = await _productRepository.GetProductById(Id);
         if (product == null)
         {
+            _logger.LogInformation("Product with ID: {ProductId} not found", Id);
             return null;
         }
         return new ProductDto
@@ -27,13 +33,17 @@ public class ProductService: IProductService
             Description = product.Description,
             Price = product.Price,
         };
+        
     }
 
     public Task<IEnumerable<ProductDto>> GetAllProducts()
     {
+        _logger.LogInformation("Getting all products");
+        
         var products = _productRepository.GetAllProducts();
         if (products == null)
         {
+            _logger.LogInformation("No products found");
             return Task.FromResult(Enumerable.Empty<ProductDto>());
         }
         return Task.FromResult(products.Result.Select(p => new ProductDto
@@ -47,6 +57,8 @@ public class ProductService: IProductService
 
     public async Task<ProductDto> CreateProduct(ProductDto productDto)
     {
+        _logger.LogInformation("Creating new product: {ProductDto}" , productDto);
+        
         var product = new Product
         {
             Id = Guid.NewGuid(),
@@ -56,6 +68,7 @@ public class ProductService: IProductService
         };
         
         var createdProduct = await _productRepository.CreateProduct(product);
+        _logger.LogInformation("Created product: {product}", product);
         
         return new ProductDto
         {
@@ -68,6 +81,7 @@ public class ProductService: IProductService
 
     public async Task<ProductDto> UpsertProduct(Guid id, ProductDto productDto)
     {
+        _logger.LogInformation("Updating product: {ProductDto}" , productDto);
         var product = new Product
         {
             Id = id,
@@ -78,6 +92,7 @@ public class ProductService: IProductService
         
         var updatedProduct = await _productRepository.UpdateProduct(product) 
                              ?? await _productRepository.CreateProduct(product);
+        
 
         return new ProductDto
         {

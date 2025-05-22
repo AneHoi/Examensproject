@@ -8,10 +8,12 @@
 
   <ItemGroup>
     <PackageReference Include="ECommerceSite.Contracts" Version="1.1.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="9.0.5" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\domain\domain.csproj" />
+    <ProjectReference Include="\contracts\contracts.csproj" />
   </ItemGroup>
 
 </Project>
