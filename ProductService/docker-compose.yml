@@ -1,0 +1,13 @@
+﻿services:
+  presentation:
+    image: presentation
+    build:
+      context: .
+      dockerfile: presentation/Dockerfile
+    networks:
+      - ecommerce_network
+
+
+networks:
+  ecommerce_network:
+    external: true

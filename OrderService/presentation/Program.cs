@@ -1,5 +1,4 @@
 using application.services;
-using contracts;
 using domain.interfaces;
 using infrastructure.repositories;
 

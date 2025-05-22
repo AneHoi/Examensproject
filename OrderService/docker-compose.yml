@@ -1,0 +1,20 @@
+﻿services:
+  presentation:
+    image: presentation
+    build:
+      context: ../
+      dockerfile: OrderService/presentation/Dockerfile
+    networks:
+      - ecommerce_network
+  
+  productservice:
+    image: productservice
+    build:
+      context: ../
+      dockerfile: ProductService/presentation/Dockerfile
+    networks:
+      - ecommerce_network
+
+networks:
+  ecommerce_network:
+    external: true
