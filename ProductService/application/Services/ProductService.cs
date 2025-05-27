@@ -1,4 +1,5 @@
-﻿using Contracts;
+﻿using application.Events;
+using Contracts;
 using domain;
 using domain.RepositoryInterfaces;
 using Microsoft.Extensions.Logging;
@@ -75,6 +76,8 @@ public class ProductService: IProductService
         
         var createdProduct = await _productRepository.CreateProduct(product);
         _logger.LogInformation("Created product: {product}", product);
+        var evt = new ProductEvent(createdProduct.Id, "Created", DateTime.UtcNow);
+        
         
         return new ProductDto
         {
