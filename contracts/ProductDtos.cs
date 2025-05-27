@@ -1,4 +1,4 @@
-namespace contracts;
+namespace Contracts;
 
 public record ProductDto
 {
@@ -6,26 +6,31 @@ public record ProductDto
     public string Name { get; init; }
     public string Description { get; init; }
     public decimal Price { get; init; }
-    public decimal Quantity { get; init; }
 }
 
-public record ProductStockCheckRequestDTO
+public record ProductCreateDto
+{
+    public string Name { get; init; }
+    public string Description { get; init; }
+    public decimal Price { get; init; }
+}
+
+public record ProductStockCheckRequestDto
 {
     public Guid ProductId { get; init; }
-    public Guid QuantityRequired { get; init; }
+    public int QuantityRequired { get; init; }
 }
 
-public record ProductStockCheckResponseDTO
+public record ProductStockCheckResponseDto
 {
     public Guid ProductId { get; init; }
     public bool IsAvailable { get; init; }
     public decimal QuantityInStock { get; init; }
     public decimal PricePerItem { get; init; }
-    
 }
 
-public record UpdateStockRequestDTO
+public record UpdateStockRequestDto
 {
     public Guid ProductId { get; init; }
-    public Guid QuantityRequired { get; init; }
+    public int QuantityRequired { get; init; }
 }
